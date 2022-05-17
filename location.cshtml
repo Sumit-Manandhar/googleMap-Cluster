@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "location";
+}
+
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.11&sensor=false" type="text/javascript"></script> 
+    @{
+        var sc = "https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js";
+    }
+    <script src="@sc"></script>
+    <script type="text/javascript">
+        // check DOM Ready
+        $(document).ready(function () {
+            // execute
+            (function () {
+                // map options
+                var options = {
+                    zoom: 5,
+                    center: new google.maps.LatLng(27.00, 80.00),
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    mapTypeControl: false
+
+                };
+
+                var map = new google.maps.Map(document.getElementById('map_canvas'), options);
+
+                const markers = [];
+                const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+               
+
+                for (var i = 0; i < locations.length; i++) {
+                    const label = labels[i % labels.length];
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
+                        map: map,
+                        label: label,
+                        optimized: true
+
+                    });
+                    markers[i] = marker;
+                   
+
+                    (function (marker, i) {
+                        // add click event
+                        google.maps.event.addListener(marker, 'click', function () {
+                            infowindow = new google.maps.InfoWindow({
+                               
+                                content: ("<div style = 'width:200px;min-height:40px'>" + locations[i].lbl + " </div>" + (' <img style= "width: 150 px; height: 30px;" src="/image/la.jpg" /> ')),
+
+
+                            });
+                            infowindow.open(map, marker);
+                        });
+                    })(marker, i);
+
+
+                   /* (new google.maps.LatLng(locations[i].lat, locations[i].lng)).toString()*/
+                }
+                
+                 new markerClusterer.MarkerClusterer({ map, markers });
+            })();
+
+        });
+        const locations = [
+            { lat: -31.56391, lng: 147.154312, lbl:"location1" },
+            { lat: -33.718234, lng: 150.363181, lbl: "location23" },
+            { lat: -33.727111, lng: 150.371124, lbl: "location22" },
+            { lat: -33.848588, lng: 151.209834, lbl: "location21" },
+            { lat: -33.851702, lng: 151.216968, lbl: "location20" },
+            { lat: -34.671264, lng: 150.863657, lbl: "location19" },
+            { lat: -35.304724, lng: 148.662905, lbl: "location18" },
+            { lat: -36.817685, lng: 175.699196, lbl: "location17"},
+            { lat: -36.828611, lng: 175.790222, lbl: "location16" },
+            { lat: -37.75, lng: 145.116667, lbl: "location15" },
+            { lat: -37.759859, lng: 145.128708, lbl: "location14" },
+            { lat: -37.765015, lng: 145.133858, lbl: "location13" },
+            { lat: -37.770104, lng: 145.143299, lbl: "location12" },
+            { lat: -37.7737, lng: 145.145187, lbl: "location11" },
+            { lat: -37.774785, lng: 145.137978, lbl: "location10" },
+            { lat: -37.819616, lng: 144.968119, lbl: "location9" },
+            { lat: -38.330766, lng: 144.695692, lbl: "location8" },
+            { lat: -39.927193, lng: 175.053218, lbl: "location7" },
+            { lat: -41.330162, lng: 174.865694, lbl: "location6" },
+            { lat: -42.734358, lng: 147.439506, lbl: "location5" },
+            { lat: -42.734358, lng: 147.501315, lbl: "location4" },
+            { lat: -42.735258, lng: 147.438, lbl: "location3" },
+            { lat: -43.999792, lng: 170.463352, lbl: "location2" },
+        ];
+    </script>
+
+</head>
+<body>
+    <div id="map_canvas" style="width: 800px; height:500px;"></div>
+  
+
+    <div style="width:100px; height:80px; color:blanchedalmond; opacity:0.5;">
+        <h1>
+
+            location1
+        </h1>
+    </div>
+
+</body>
+
+</html>
+
